@@ -1,20 +1,20 @@
-# Robot Order Automation - Robocorp Level I Certification
+# Sales Data Automation - Robocorp Level I Certification
 
 ![Demo](robocorp-cert-i-demo.gif)
 
-An entry-level RPA bot built with Robocorp and Python that automates the robot ordering workflow on [RobotSpareBin Industries](https://robotsparebinindustries.com/#/robot-order). This is the **Automation Certification Level I** project.
+An entry-level RPA bot built with Robocorp and Python that automates Maria's weekly sales data entry workflow at [RobotSpareBin Industries](https://robotsparebinindustries.com/). This is the **Automation Certification Level I** project.
 
 ## What It Does
 
-1. **Opens the order portal:** navigates to RobotSpareBin Industries and dismisses the modal
-2. **Downloads order data:** fetches `orders.csv` directly from the site (no manual download)
-3. **Processes each order:** for every row in the CSV:
-- Selects the head, body, and leg parts
-- Enters the shipping address
-- Clicks Preview to render the assembled robot
-- Clicks Order to submit
-- Saves the HTML receipt as a PDF
-- Returns to the form for the next order
+1. **Opens the intranet:** navigates to the RobotSpareBin Industries intranet
+2. **Logs in:** authenticates as the intranet admin (Maria)
+3. **Downloads sales data:** fetches `SalesData.xlsx` directly from the site
+4. **Processes each row:** for every sales representative in the spreadsheet:
+   - Fills in first name, last name, sales target, and sales result
+   - Submits the form
+5. **Captures results:** takes a screenshot of the completed sales summary table
+6. **Exports to PDF:** converts the results table to `output/sales_results.pdf`
+7. **Logs out**
 
 ## Project Structure
 
@@ -24,7 +24,8 @@ robocorp-cert-i/
 ├── conda.yaml    # Python environment definition (managed by RCC)
 ├── robot.yaml    # Task and environment configuration
 └── output/
-    └── receipts/ # PDF receipts generated at runtime
+    ├── sales_summary.png   # Screenshot of completed results table
+    └── sales_results.pdf   # PDF export of the sales data
 ```
 
 ## Tech Stack
@@ -41,7 +42,7 @@ robocorp-cert-i/
 
 **VS Code (Robocorp extension):**
 1. Open the project folder
-2. Click the Robocorp panel → Run "Order robots"
+2. Click the Robocorp panel -> Run "Robot Spare Bin Python"
 
 **Command line:**
 ```bash
@@ -53,9 +54,10 @@ RCC reads `conda.yaml` and builds an isolated Python environment automatically. 
 ## Key Implementation Notes
 
 - Uses `robocorp-browser` (Playwright) for browser control with `slowmo=100`
-- `RPA.HTTP` downloads the orders CSV at runtime; the bot is self-contained
-- `RPA.PDF` converts the receipt HTML to PDF for each order
-- Each PDF is saved to `output/receipts/<order_number>.pdf`
+- `RPA.HTTP` downloads the Excel file at runtime; the bot is self-contained
+- `RPA.Excel.Files` reads `SalesData.xlsx` without requiring Microsoft Excel
+- `RPA.PDF` converts the final HTML results table to a single PDF
+- Output files are saved to the `output/` directory
 
 > **Note:** See the [Level II version](https://github.com/J3R3B3AR/robocorp-certification-2) for an enhanced implementation that adds retry logic, robot screenshots embedded into PDF receipts, and a final ZIP archive of all receipts.
 
