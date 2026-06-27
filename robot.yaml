@@ -1,0 +1,12 @@
+tasks:
+  Order robots:
+    shell: python -m robocorp.tasks run tasks.py -t order_robots_from_RobotSpareBin
+
+condaConfigFile: conda.yaml
+
+artifactsDir: output
+
+PATH:
+  - .
+PYTHONPATH:
+  - .
